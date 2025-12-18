@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>My Work | Arav Sidpara</title>
 
-<!-- Stylesheet -->
+<!-- CSS -->
 <link rel="stylesheet" href="css/style.css">
 
-<!-- Leaflet CSS -->
+<!-- Leaflet CSS for Map -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <!-- JS -->
@@ -15,7 +15,6 @@
 <script src="js/main.js" defer></script>
 
 <style>
-/* ---------- Page & Section Styles ---------- */
 body{font-family:Arial,sans-serif; background:#111; color:#fff; padding:20px;}
 nav b{font-size:24px; color:#0ff;}
 nav a{margin:0 10px; color:#0ff; text-decoration:none;}
@@ -36,7 +35,7 @@ input, button{padding:10px; margin:5px;}
 </head>
 <body>
 
-<!-- ---------- Navigation ---------- -->
+<!-- Navigation -->
 <nav>
 <b>ARAV</b>
 <div>
@@ -49,36 +48,20 @@ input, button{padding:10px; margin:5px;}
 </div>
 </nav>
 
-<!-- ---------- Section: My Work ---------- -->
+<!-- My Work Section -->
 <section>
 <h1>My Work</h1>
 
 <div class="grid">
-  <!-- Games Box -->
-  <div class="card" id="gamesCard">
-    <h2>🎮 Games</h2>
-    <p>Click to view all games</p>
-  </div>
-
-  <!-- Weather Box -->
-  <div class="card" id="weatherCard">
-    <h2>☀️ Weather</h2>
-    <p>Click to check weather</p>
-  </div>
-
-  <!-- Songs Box -->
-  <div class="card" id="songsCard">
-    <h2>🎵 Songs</h2>
-    <p>Click to open music player</p>
-  </div>
+  <div class="card" id="gamesCard"><h2>🎮 Games</h2><p>Click to view all games</p></div>
+  <div class="card" id="weatherCard"><h2>☀️ Weather</h2><p>Click to check weather</p></div>
+  <div class="card" id="songsCard"><h2>🎵 Songs</h2><p>Click to open music player</p></div>
 </div>
 
-<!-- ---------- Games List ---------- -->
-<div id="gamesList">
-  <div class="grid-inner"></div>
-</div>
+<!-- Games List -->
+<div id="gamesList"><div class="grid-inner"></div></div>
 
-<!-- ---------- Weather Section ---------- -->
+<!-- Weather Section -->
 <div id="weatherSection">
   <div class="grid-inner">
     <div class="card glass">
@@ -92,7 +75,7 @@ input, button{padding:10px; margin:5px;}
   </div>
 </div>
 
-<!-- ---------- Songs Section ---------- -->
+<!-- Songs Section -->
 <div id="songsSection">
   <div class="grid-inner">
     <div class="card">
@@ -104,9 +87,9 @@ input, button{padding:10px; margin:5px;}
 
 </section>
 
-<!-- ---------- JavaScript ---------- -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
   // ---------- Games ----------
   const games = [
     {name:"Snake", url:"https://playsnake.org/"},
@@ -132,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {name:"Basketball Shoot", url:"https://www.crazygames.com/game/basketball-stars"},
     {name:"Asteroids", url:"https://www.retrogames.cz/play_002-NES.php?language=EN"},
     {name:"Word Search", url:"https://thewordsearch.com/"},
-    {name:"Minecraft", url:"https://www.247mahjong.com/"},
+    {name:"Mahjong", url:"https://www.247mahjong.com/"},
     {name:"Tower Defense", url:"https://www.crazygames.com/game/bloons-tower-defense-5"},
     {name:"Simon Says", url:"https://www.memozor.com/simon-says"},
     {name:"Brick Breaker", url:"https://www.crazygames.com/game/breakout"},
