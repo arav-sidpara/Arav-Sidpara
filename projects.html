@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Work | Arav Sidpara</title>
+
+<!-- Stylesheet -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<!-- JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/main.js" defer></script>
+
+<style>
+/* ---------- Page & Section Styles ---------- */
+body{font-family:Arial,sans-serif; background:#111; color:#fff; padding:20px;}
+nav b{font-size:24px; color:#0ff;}
+nav a{margin:0 10px; color:#0ff; text-decoration:none;}
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin-top:20px;}
+.card{background:#222; border:2px solid #0ff; border-radius:12px; padding:20px; text-align:center; transition:all 0.3s ease; cursor:pointer;}
+.card:hover{transform:scale(1.05); box-shadow:0 0 15px #0ff;}
+.card h2,h3{margin:10px 0;}
+#gamesList, #weatherSection, #songsSection{display:none; margin-top:20px;}
+#gamesList .grid-inner, #weatherSection .grid-inner, #songsSection .grid-inner{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
+iframe{border:3px solid #0ff; border-radius:12px; width:100%; height:400px;}
+input, button{padding:10px; margin:5px;}
+#suggestions{background:#222; border:1px solid #0ff; max-height:150px; overflow-y:auto; position:absolute; z-index:1000; width:300px; color:#fff; border-radius:6px;}
+.autocomplete-suggestion{padding:8px; cursor:pointer;}
+.autocomplete-suggestion:hover{background:#0ff; color:#000;}
+#map{height:400px; margin-top:20px; border:3px solid #0ff; border-radius:12px;}
+#weatherResult{margin-top:15px; padding:10px; background:#222; border-radius:10px;}
+</style>
+</head>
+<body>
+
+<!-- ---------- Navigation ---------- -->
+<nav>
+<b>ARAV</b>
+<div>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="features.html">Features</a>
+<a href="projects.html">My Work</a>
+<a href="contact.html">Contact</a>
+<span class="toggle" onclick="toggleMode()">☀️/🌙</span>
+</div>
+</nav>
+
+<!-- ---------- Section: My Work ---------- -->
+<section>
+<h1>My Work</h1>
+
+<div class="grid">
+  <!-- Games Box -->
+  <div class="card" id="gamesCard">
+    <h2>🎮 Games</h2>
+    <p>Click to view all games</p>
+  </div>
+
+  <!-- Weather Box -->
+  <div class="card" id="weatherCard">
+    <h2>☀️ Weather</h2>
+    <p>Click to check weather</p>
+  </div>
+
+  <!-- Songs Box -->
+  <div class="card" id="songsCard">
+    <h2>🎵 Songs</h2>
+    <p>Click to open music player</p>
+  </div>
+</div>
+
+<!-- ---------- Games List ---------- -->
+<div id="gamesList">
+  <div class="grid-inner"></div>
+</div>
+
+<!-- ---------- Weather Section ---------- -->
+<div id="weatherSection">
+  <div class="grid-inner">
+    <div class="card glass">
+      <h3>Weather Finder</h3>
+      <input type="text" id="cityInput" placeholder="Search city..." autocomplete="off" style="width:300px;">
+      <div id="suggestions"></div>
+      <button id="checkWeatherBtn">Check Weather</button>
+      <p id="weatherResult"></p>
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- Songs Section ---------- -->
+<div id="songsSection">
+  <div class="grid-inner">
+    <div class="card">
+      <h3>Songs Player</h3>
+      <iframe src="https://acegikmo135.github.io/songsphere/" allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- ---------- JavaScript ---------- -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // ---------- Games ----------
+  const games = [
+    {name:"Snake", url:"https://playsnake.org/"},
+    {name:"Tic Tac Toe", url:"https://playtictactoe.org/"},
+    {name:"Flappy Bird", url:"https://flappybird.io/"},
+    {name:"2048", url:"https://play2048.co/"},
+    {name:"Minesweeper", url:"https://minesweeperonline.com/"},
+    {name:"Pacman", url:"https://www.google.com/logos/2010/pacman10-i.html"},
+    {name:"Sudoku", url:"https://www.websudoku.com/"},
+    {name:"Chess", url:"https://www.chess.com/play/online"},
+    {name:"Checkers", url:"https://www.mathsisfun.com/games/checkers.html"},
+    {name:"Memory Match", url:"https://www.memozor.com/memory-games"},
+    {name:"Hangman", url:"https://hangmanwordgame.com/"},
+    {name:"Trivia Quiz", url:"https://www.sporcle.com/"},
+    {name:"Space Invaders", url:"https://www.retrogames.cz/play_029-NES.php?language=EN"},
+    {name:"Brick Shooter", url:"https://www.coolmathgames.com/0-brick-breaker"},
+    {name:"Typing Test", url:"https://10fastfingers.com/typing-test/english"},
+    {name:"Platformer", url:"https://www.crazygames.com/game/rooftop-run"},
+    {name:"Racing Game", url:"https://www.crazygames.com/game/stunt-car-challenge"},
+    {name:"Puzzle Slider", url:"https://www.puzzle-slider.com/"},
+    {name:"Connect Four", url:"https://connect4.games/"},
+    {name:"Slot Machine", url:"https://www.freepokies.com/slot-machine"},
+    {name:"Basketball Shoot", url:"https://www.crazygames.com/game/basketball-stars"},
+    {name:"Asteroids", url:"https://www.retrogames.cz/play_002-NES.php?language=EN"},
+    {name:"Word Search", url:"https://thewordsearch.com/"},
+    {name:"Minecraft", url:"https://www.247mahjong.com/"},
+    {name:"Tower Defense", url:"https://www.crazygames.com/game/bloons-tower-defense-5"},
+    {name:"Simon Says", url:"https://www.memozor.com/simon-says"},
+    {name:"Brick Breaker", url:"https://www.crazygames.com/game/breakout"},
+    {name:"Jigsaw Puzzle", url:"https://www.jigsawplanet.com/"},
+    {name:"Typing Challenge", url:"https://www.typing.com/student/games"},
+    {name:"Mini Golf", url:"https://www.crazygames.com/game/mini-golf-3d"}
+  ];
+
+  const gamesCard = document.getElementById("gamesCard");
+  const gamesList = document.getElementById("gamesList").querySelector(".grid-inner");
+
+  gamesCard.addEventListener("click", () => {
+    const parent = document.getElementById("gamesList");
+    parent.style.display = parent.style.display === "none" || parent.style.display === "" ? "block" : "none";
+    if(gamesList.childElementCount === 0){
+      games.forEach(game => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<h3>${game.name}</h3>`;
+        div.addEventListener("click", ()=> window.open(game.url,"_blank"));
+        gamesList.appendChild(div);
+      });
+    }
+  });
+
+  // ---------- Weather ----------
+  const weatherCard = document.getElementById("weatherCard");
+  const weatherSection = document.getElementById("weatherSection");
+  weatherCard.addEventListener("click", ()=>{
+    weatherSection.style.display = weatherSection.style.display === "none" || weatherSection.style.display === "" ? "block" : "none";
+  });
+
+  // ---------- Songs ----------
+  const songsCard = document.getElementById("songsCard");
+  const songsSection = document.getElementById("songsSection");
+  songsCard.addEventListener("click", ()=>{
+    songsSection.style.display = songsSection.style.display === "none" || songsSection.style.display === "" ? "block" : "none";
+  });
+
+  // ---------- Weather Autocomplete & Map ----------
+  const apiKey = "8df685d6107fc563d49b364868207f29"; // Replace with your key
+  const cityInput = document.getElementById("cityInput");
+  const suggestions = document.getElementById("suggestions");
+  const weatherResult = document.getElementById("weatherResult");
+
+  cityInput.addEventListener("input", async ()=>{
+    const query = cityInput.value;
+    if(query.length<2){ suggestions.innerHTML=""; return; }
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+    const data = await res.json();
+    suggestions.innerHTML = "";
+    data.slice(0,5).forEach(place=>{
+      const div = document.createElement("div");
+      div.className = "autocomplete-suggestion";
+      div.textContent = `${place.display_name}`;
+      div.addEventListener("click", ()=>{
+        cityInput.value = place.display_name;
+        suggestions.innerHTML = "";
+        getWeatherByCoords(place.lat, place.lon);
+        map.setView([place.lat, place.lon],10);
+        marker.setLatLng([place.lat, place.lon]);
+      });
+      suggestions.appendChild(div);
+    });
+  });
+
+  const map = L.map('map').setView([20.5937, 78.9629], 5);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{ maxZoom:19 }).addTo(map);
+  const marker = L.marker([20.5937, 78.9629]).addTo(map);
+  map.on('click', function(e){
+    const {lat, lng} = e.latlng;
+    marker.setLatLng([lat, lng]);
+    getWeatherByCoords(lat, lng);
+  });
+
+  async function getWeatherByCoords(lat, lon){
+    try{
+      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`);
+      const data = await res.json();
+      weatherResult.textContent = `Weather in ${data.name}: ${data.weather[0].description}, Temp: ${data.main.temp}°C, Humidity: ${data.main.humidity}%`;
+    } catch(e){
+      weatherResult.textContent = "Error fetching weather!";
+    }
+  }
+
+  document.getElementById("checkWeatherBtn").addEventListener("click", async ()=>{
+    const query = cityInput.value;
+    if(!query) return alert("Enter a city!");
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+    const data = await res.json();
+    if(!data[0]) return alert("City not found!");
+    const place = data[0];
+    map.setView([place.lat, place.lon],10);
+    marker.setLatLng([place.lat, place.lon]);
+    getWeatherByCoords(place.lat, place.lon);
+  });
+
+});
+</script>
+</body>
+</html>
