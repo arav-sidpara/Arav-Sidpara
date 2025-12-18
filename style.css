@@ -1,0 +1,58 @@
+:root{
+  --bg:#05080f;
+  --glass:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.15);
+  --text:#e5e7eb;
+  --neon:#00f2ff;
+  --neon2:#7c3aed;
+}
+
+body.light{
+  --bg:#f8fafc;
+  --glass:#ffffff;
+  --border:#e5e7eb;
+  --text:#020617;
+  --neon:#2563eb;
+  --neon2:#9333ea;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:radial-gradient(circle at top,var(--neon2),var(--bg));color:var(--text);transition:.4s;}
+
+/* NAVBAR */
+nav{
+  position:fixed;top:0;width:100%;padding:18px 10%;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,0.45);backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);z-index:999;
+}
+nav b{font-size:1.2rem;letter-spacing:2px;}
+nav a{color:var(--text);margin-left:26px;text-decoration:none;font-weight:500;position:relative;}
+nav a::after{content:'';position:absolute;bottom:-6px;left:0;width:0;height:2px;background:var(--neon);transition:.3s;}
+nav a:hover::after{width:100%;}
+.toggle{cursor:pointer;margin-left:26px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.hero h1{font-size:4rem;background:linear-gradient(90deg,var(--neon),var(--neon2));-webkit-background-clip:text;color:transparent;}
+.hero p{margin-top:14px;opacity:.85;}
+.btn{display:inline-block;margin-top:30px;padding:14px 34px;border-radius:40px;background:linear-gradient(90deg,var(--neon),var(--neon2));color:white;text-decoration:none;font-weight:600;box-shadow:0 0 40px var(--neon);}
+
+/* SECTIONS */
+section{padding:130px 10%;}
+.glass{background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:40px;box-shadow:0 30px 80px rgba(0,0,0,0.6);}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;margin-top:40px;}
+.card{padding:30px;border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));border:1px solid var(--border);transition:.4s;}
+.card:hover{transform:translateY(-12px);box-shadow:0 0 40px var(--neon);}
+
+/* PROJECTS MEDIA */
+.project-media{width:100%;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,0.6);}
+
+/* FOOTER */
+footer{text-align:center;padding:40px;border-top:1px solid var(--border);opacity:.7;}
+
+/* RESPONSIVE */
+@media(max-width:768px){.hero h1{font-size:2.6rem}nav{padding:18px 6%;}}
